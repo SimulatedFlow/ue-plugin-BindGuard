@@ -1,0 +1,42 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0.0",
+	"EngineVersion": "5.8.0",
+	"FriendlyName": "BindGuard - Every Action Bound, On Every Device",
+	"Description": "Enhanced Input manages your bindings. It does not check them. BindGuard checks them, and it answers the five questions that decide whether a console submission comes back approved. One: which action did nobody bind? An Input Action asset that appears in no mapping context at all is an action that exists, compiles, has a Blueprint node and does nothing. Two: which action exists only on one device? Bound on keyboard and mouse but not on the gamepad is the single most common reason a first submission fails certification, and it is invisible in the editor because the person building the level is holding a keyboard. The device is decided from the FKey itself - IsGamepadKey, IsMouseButton, IsTouch - never from the name of the action, so renaming nothing changes the answer. Three: which two actions are fighting over the same key? Same key, same context, same chord layer. And here BindGuard is deliberately honest where a naive checker would cry wolf: two contexts are allowed to use the same key, that is the entire point of contexts, so only a collision inside one context is an error, and a collision between contexts is reported as information. Four: which mapping context does nobody ever add? Five: which action is unreachable because the only context it lives in is never active? That last pair cannot be computed from assets, because whether AddMappingContext is called lives in Blueprint logic, so BindGuard records what actually happened at runtime and splits the report in two: static findings, read from the assets and always true, and observed findings, which say what happened in this session and say so in those words. A line that pretends to know more than it does would be worse than no line at all. The report draws on UCanvas from an AHUD, so it survives a cooked Shipping build - actions and contexts by name, errors first, one plain-English sentence per finding that says what to do rather than only what is wrong. When there is nothing to report it turns green and lists what was checked, so green can never be confused with never ran. The exemption list is a first-class feature and not an afterthought: every project has an action that is meant to be keyboard-only, and a tool that reports twenty errors on its first run is a tool that gets switched off in the first hour, so exempt actions are named in Project Settings - and what was exempted is still counted and still shown, as '2 excluded by settings', so the list can never quietly hide itself. On a build server it is one command: BindGuard.Gate writes Saved/BindGuard/report.json and ends the process with 0 when clean, 1 when there are only warnings and 2 when there is an error - the same three return codes as LocaleGuard, AssetWarden, WidgetLedger, LoadLens and HeapCensus, so a project that already owns one of these has nothing new to learn. The rules themselves are static functions over plain structs - ClassifyKey, FindUnbound, FindDeviceGaps, FindConflicts, Judge - with no world, no subsystem and no asset registry behind them, which is why they are covered by automation tests and can be called from your own tooling. Two modules: a runtime module that observes and draws, and an editor module that walks the asset registry so the static check runs with no game running. The runtime never depends on the editor, so the report still works in the packaged build, which is exactly where you want it. Win64, source included, no third-party code.",
+	"Category": "Engine Tools",
+	"CreatedBy": "Silvan Teufel",
+	"CreatedByURL": "https://silvan.teufel-engineering.com",
+	"DocsURL": "https://wiki.teufel-engineering.com/en/BindGuard/documentation",
+	"MarketplaceURL": "",
+	"SupportURL": "mailto:teufelsilvan@gmail.com",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "BindGuard",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		},
+		{
+			"Name": "BindGuardEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "EnhancedInput",
+			"Enabled": true
+		}
+	]
+}
