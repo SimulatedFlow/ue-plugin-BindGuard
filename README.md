@@ -96,9 +96,8 @@ Support: <mailto:teufelsilvan@gmail.com>
 This repository contains the **full source** of a commercial Unreal Engine plugin. It is **source-available, not open source**: read it, evaluate it, then buy a license to use it. See **the Fab Content License Agreement / Unreal Engine EULA (purchase required)**.
 
 **Get it / Buy:**
+- **Buy on Fab** (this plugin): https://www.fab.com/listings/4add657e-71e6-4af0-92fc-3c513de3d3da
 - Fab store — all our UE5 plugins: https://www.fab.com/sellers/Silvan%20Teufel
-
-_This plugin does not have its own Fab listing yet — the store link above is where everything we currently sell lives._
 
 ### 📬 **Free UE5 Snippet-Pack**
 
